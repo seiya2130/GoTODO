@@ -6,5 +6,6 @@ func InitializeRoutes(r *gin.Engine) {
 	api := r.Group("/api/v1")
 	{
 		api.POST("/tasks", CreateTask)
+		api.GET("/tasks", GetAllTasks)
 	}
 }

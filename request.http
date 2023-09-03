@@ -3,6 +3,9 @@ POST http://localhost:8080/api/v1/tasks
 Content-Type: application/json
 
 {
-    "title": "Sample Task",
-    "body": "This is a sample task description."
+    "title": "Sample Task2",
+    "body": "This is a sample task2 description."
 }
+
+### Get all tasks
+GET http://localhost:8080/api/v1/tasks

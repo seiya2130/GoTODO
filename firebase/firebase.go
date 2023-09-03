@@ -37,3 +37,27 @@ func CreateTask(task model.Task) (*model.Task, error) {
 	task.ID = ref.ID
 	return &task, nil
 }
+
+func GetAllTasks() ([]model.Task, error) {
+	client, err := app.Firestore(ctx)
+	if err != nil {
+		return nil, err
+	}
+	defer client.Close()
+
+	// タスクのコレクションからドキュメントを取得
+	iter := client.Collection("tasks").Documents(ctx)
+	docs, err := iter.GetAll()
+	if err != nil {
+		return nil, err
+	}
+
+	var tasks []model.Task
+	for _, doc := range docs {
+		task := model.Task{}
+		doc.DataTo(&task)
+		task.ID = doc.Ref.ID
+		tasks = append(tasks, task)
+	}
+	return tasks, nil
+}
