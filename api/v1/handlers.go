@@ -33,3 +33,14 @@ func GetAllTasks(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, tasks)
 }
+
+func GetTaskByID(c *gin.Context) {
+	id := c.Param("id")
+
+	task, err := firebase.GetTaskByID(id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, task)
+}

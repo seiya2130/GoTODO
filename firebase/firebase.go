@@ -4,10 +4,13 @@ import (
 	"GoTODO/config"
 	"GoTODO/model"
 	"context"
+	"fmt"
 	"log"
 
 	firebase "firebase.google.com/go/v4"
 	"google.golang.org/api/option"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 var app *firebase.App
@@ -60,4 +63,26 @@ func GetAllTasks() ([]model.Task, error) {
 		tasks = append(tasks, task)
 	}
 	return tasks, nil
+}
+
+func GetTaskByID(id string) (*model.Task, error) {
+	client, err := app.Firestore(ctx)
+	if err != nil {
+		return nil, err
+	}
+	defer client.Close()
+
+	doc, err := client.Collection("tasks").Doc(id).Get(ctx)
+	if err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, fmt.Errorf("Document with ID %s not found", id)
+		}
+		return nil, err
+	}
+
+	task := model.Task{}
+	doc.DataTo(&task)
+	task.ID = doc.Ref.ID
+
+	return &task, nil
 }

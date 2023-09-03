@@ -7,5 +7,6 @@ func InitializeRoutes(r *gin.Engine) {
 	{
 		api.POST("/tasks", CreateTask)
 		api.GET("/tasks", GetAllTasks)
+		api.GET("/tasks/:id", GetTaskByID)
 	}
 }
