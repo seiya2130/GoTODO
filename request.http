@@ -12,3 +12,15 @@ GET http://localhost:8080/api/v1/tasks
 
 ### Get a task by ID
 GET http://localhost:8080/api/v1/tasks/kDQek6TKyoqzCYNaIJUx
+
+### Update a task
+PUT http://localhost:8080/api/v1/tasks/kDQek6TKyoqzCYNaIJUx
+Content-Type: application/json
+
+{
+	"title": "Updated task title",
+	"body": "Updated task description"
+}
+
+### Delete a task
+DELETE http://localhost:8080/api/v1/tasks/YOUR_TASK_ID_HERE

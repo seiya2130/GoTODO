@@ -44,3 +44,31 @@ func GetTaskByID(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, task)
 }
+
+func UpdateTask(c *gin.Context) {
+	id := c.Param("id")
+
+	var updatedTask model.Task
+	if err := c.BindJSON(&updatedTask); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	err := firebase.UpdateTask(id, updatedTask)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "Task updated successfully!"})
+}
+
+func DeleteTask(c *gin.Context) {
+	id := c.Param("id")
+
+	err := firebase.DeleteTask(id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "Task deleted successfully!"})
+}

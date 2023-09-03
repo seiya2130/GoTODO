@@ -86,3 +86,25 @@ func GetTaskByID(id string) (*model.Task, error) {
 
 	return &task, nil
 }
+
+func UpdateTask(id string, updatedTask model.Task) error {
+	client, err := app.Firestore(ctx)
+	if err != nil {
+		return err
+	}
+	defer client.Close()
+
+	_, err = client.Collection("tasks").Doc(id).Set(ctx, updatedTask)
+	return err
+}
+
+func DeleteTask(id string) error {
+	client, err := app.Firestore(ctx)
+	if err != nil {
+		return err
+	}
+	defer client.Close()
+
+	_, err = client.Collection("tasks").Doc(id).Delete(ctx)
+	return err
+}
